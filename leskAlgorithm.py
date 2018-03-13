@@ -66,8 +66,9 @@ def lesk(word, sentence):
     
     return bestSense
 
-print(lesk('bank', 'The bank can guarantee deposits will eventually cover future tuition costs because it invests in adjustable-rate mortgage securities.').definition())
-print(lesk('pine', 'pine cone').definition())
+#print(lesk('bank', 'The bank can guarantee deposits will eventually cover future tuition costs because it invests in adjustable-rate mortgage securities.').definition())
+#print(lesk('pine', 'pine cone').definition())
+print(lesk('bass', 'I am cooking basses').definition())
 
 #for sin in wn.synsets('bank'):
 #    print(sin.definition())
