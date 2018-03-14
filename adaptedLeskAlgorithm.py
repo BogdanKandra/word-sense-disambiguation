@@ -6,6 +6,7 @@ Created on Tue Mar 13 18:16:11 2018
 
 from nltk.corpus import wordnet as wn
 from nltk.tokenize import word_tokenize as wTok
+from functools import reduce
 
 marks = ['.', ',', '?', '!', ':', ';', '(', ')',
          '[', ']', '...', '\'', '\"', "\''"]
@@ -92,12 +93,14 @@ def overlap(gloss1, gloss2):
                             result = resultTemp
         
     return result
-            
 
 def score(gloss1, gloss2):
-    """Calculates the score of the given pair of glosses.\n
+    """Calculates the score of the given pair of glosses using the following
+    algorithm:\n
     1. Compute the longest overlap between the glosses \n
-    2. 
+    2. Add the square of the length of the overlap to the total score \n
+    3. Replace the longest overlap with markers in both glosses \n
+    4. Repeat from step 1 until there are no overlaps between the glosses
 
     Arguments:
         gloss1 (str) -- first gloss
@@ -106,8 +109,29 @@ def score(gloss1, gloss2):
 
     Returns:
         int type -- the score of the pair of glosses
+        
+    Example:
+        score('The house is full of rabbits and snakes', 'My house is overriden
+        by rabbits and snakes') = 13
     """
     
-    maxOverlap = overlap(gloss1, gloss2)
+    score = 0
     
-print(overlap("ana are mere multe", "ana vrea sa aiba mere multe dar ana are mere multe"))
+    maxOverlap = overlap(gloss1, gloss2)
+    score += len(maxOverlap)**2
+    
+    while maxOverlap != '':
+        maxOverlapString = reduce(lambda a, b: a + ' ' + b, maxOverlap, '')[1:]
+        gloss1 = gloss1.replace(maxOverlapString, '*')
+        gloss2 = gloss2.replace(maxOverlapString, '/')
+        
+        maxOverlap = overlap(gloss1, gloss2)
+        score += len(maxOverlap)**2
+    
+    return score
+    
+#print(overlap("ana are mere multe", "ana vrea sa aiba mere multe dar ana are mere multe"))
+
+#print(score("ana are mere multe", "ana vrea sa aiba mere multe dar ana are mere multe"))
+
+print(score('The house is full of rabbits and snakes', 'My house is overriden by rabbits and snakes'))
