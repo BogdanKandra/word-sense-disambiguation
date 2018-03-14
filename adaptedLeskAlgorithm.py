@@ -53,42 +53,44 @@ def overlap(gloss1, gloss2):
     gl1 = wTok(gloss1)
     gl2 = wTok(gloss2)
     
-    gl1Enum = enumerate(gl1)
-    
     result = ''
     length = 0
     
-    for index, word in gl1Enum:
-        lengthTemp = 0
+    for i in range(len(gl1)):
         resultTemp = []
+        lengthTemp = 0
         
-        if word in gl2:
-            wIndex = gl2.index(word)  # Take the index of the word in the second gloss
-            lengthTemp += 1   # Increment the length of the greatest overlap
-            resultTemp.append(word)   # Construct a temp list with the word
-            cond = True
+        if gl1[i] in gl2:
+            indices = [idx for idx, j in enumerate(gl2) if j == gl1[i]]
             
-            while cond:   # While words overlap
-                nextIter = next(gl1Enum, None)
-                if nextIter is not None:
-                    nextWord1 = nextIter[1]
-                    wIndex += 1
-                    nextWord2 = gl2[wIndex]
-                    
-                    if nextWord1 == nextWord2:
-                        lengthTemp += 1
-                        resultTemp.append(nextWord1)
+            for index in indices:
+                iCopy = i
+                lengthTemp = 1
+                resultTemp = [gl1[i]]
+                
+                cond = True
+                
+                while cond:
+                    if iCopy + 1 < len(gl1) and index + 1 < len(gl2):
+                        iCopy += 1
+                        nextWord1 = gl1[iCopy]
+                        index += 1
+                        nextWord2 = gl2[index]
+                        
+                        if nextWord1 == nextWord2:
+                            lengthTemp += 1
+                            resultTemp.append(nextWord1)
+                        else:
+                            cond = False
+                            if lengthTemp > length:
+                                length = lengthTemp
+                                result = resultTemp
                     else:
                         cond = False
                         if lengthTemp > length:
                             length = lengthTemp
                             result = resultTemp
-                else:
-                    cond = False
-                    if lengthTemp > length:
-                        length = lengthTemp
-                        result = resultTemp
-    
+        
     return result
             
 
@@ -108,4 +110,4 @@ def score(gloss1, gloss2):
     
     maxOverlap = overlap(gloss1, gloss2)
     
-    
+print(overlap("ana are mere multe", "ana vrea sa aiba mere multe dar ana are mere multe"))
