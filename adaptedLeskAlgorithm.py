@@ -35,7 +35,7 @@ def remove_punctuation(tokenList):
     return result
 
 def overlap(gloss1, gloss2):
-    """Determines the longest sequence of common words between the two glosses.
+    """Determines the longest sequence of common words between two glosses.
     
     Arguments:
         gloss1 (str) -- first gloss
@@ -44,16 +44,58 @@ def overlap(gloss1, gloss2):
     
     Returns:
         str type -- the longest sequence of common words
+        
+    Example:
+        overlap('The house is full of rabbits and snakes', 
+        'My house is overriden by rabbits and snakes') = 'rabbits and snakes'
     """
-    result = ''
+
+    gl1 = wTok(gloss1)
+    gl2 = wTok(gloss2)
     
-    for word in gloss1:
-        if word in gloss2:
+    gl1Enum = enumerate(gl1)
+    
+    result = ''
+    length = 0
+    
+    for index, word in gl1Enum:
+        lengthTemp = 0
+        resultTemp = []
+        
+        if word in gl2:
+            wIndex = gl2.index(word)  # Take the index of the word in the second gloss
+            lengthTemp += 1   # Increment the length of the greatest overlap
+            resultTemp.append(word)   # Construct a temp list with the word
+            cond = True
+            
+            while cond:   # While words overlap
+                nextIter = next(gl1Enum, None)
+                if nextIter is not None:
+                    nextWord1 = nextIter[1]
+                    wIndex += 1
+                    nextWord2 = gl2[wIndex]
+                    
+                    if nextWord1 == nextWord2:
+                        lengthTemp += 1
+                        resultTemp.append(nextWord1)
+                    else:
+                        cond = False
+                        if lengthTemp > length:
+                            length = lengthTemp
+                            result = resultTemp
+                else:
+                    cond = False
+                    if lengthTemp > length:
+                        length = lengthTemp
+                        result = resultTemp
+    
+    return result
             
 
 def score(gloss1, gloss2):
     """Calculates the score of the given pair of glosses.\n
-    1. Compute the longest overlap between the glosses
+    1. Compute the longest overlap between the glosses \n
+    2. 
 
     Arguments:
         gloss1 (str) -- first gloss
@@ -63,4 +105,7 @@ def score(gloss1, gloss2):
     Returns:
         int type -- the score of the pair of glosses
     """
+    
+    maxOverlap = overlap(gloss1, gloss2)
+    
     
