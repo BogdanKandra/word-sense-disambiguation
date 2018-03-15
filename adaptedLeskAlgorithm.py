@@ -44,17 +44,18 @@ def overlap(gloss1, gloss2):
         gloss2 (str) -- second gloss
     
     Returns:
-        str type -- the longest sequence of common words
+        list(str) type -- the longest sequence of common words, as a list
         
-    Example:
+    Examples:
         overlap('The house is full of rabbits and snakes', 
-        'My house is overriden by rabbits and snakes') = 'rabbits and snakes'
+        'My house is overriden by rabbits and snakes') = ['rabbits', 'and', 'snakes']\n
+        overlap('ghost player', 'baseball superstar') = []
     """
 
     gl1 = wTok(gloss1)
     gl2 = wTok(gloss2)
     
-    result = ''
+    result = []
     length = 0
     
     for i in range(len(gl1)):
@@ -109,24 +110,23 @@ def score(gloss1, gloss2):
 
     Returns:
         int type -- the score of the pair of glosses
-        
-    Example:
+
+    Examples:
         score('The house is full of rabbits and snakes', 'My house is overriden
-        by rabbits and snakes') = 13
+        by rabbits and snakes') = 13\n
+        score('ghost player', 'baseball superstar') = 0
     """
     
     score = 0
+    maxOverlap = ['.']
     
-    maxOverlap = overlap(gloss1, gloss2)
-    score += len(maxOverlap)**2
-    
-    while maxOverlap != '':
+    while maxOverlap != []:
+        maxOverlap = overlap(gloss1, gloss2)
+        score += len(maxOverlap)**2
+
         maxOverlapString = reduce(lambda a, b: a + ' ' + b, maxOverlap, '')[1:]
         gloss1 = gloss1.replace(maxOverlapString, '*')
         gloss2 = gloss2.replace(maxOverlapString, '/')
-        
-        maxOverlap = overlap(gloss1, gloss2)
-        score += len(maxOverlap)**2
     
     return score
     
@@ -134,4 +134,6 @@ def score(gloss1, gloss2):
 
 #print(score("ana are mere multe", "ana vrea sa aiba mere multe dar ana are mere multe"))
 
-print(score('The house is full of rabbits and snakes', 'My house is overriden by rabbits and snakes'))
+#print(score('The house is full of rabbits and snakes', 'My house is overriden by rabbits and snakes'))
+
+#print(score('ghost player', 'baseball superstar'))
