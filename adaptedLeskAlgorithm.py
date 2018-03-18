@@ -8,37 +8,9 @@ from nltk.corpus import wordnet as wn
 from nltk.tokenize import word_tokenize as wTok
 from functools import reduce
 
-marks = ['.', ',', '?', '!', ':', ';', '(', ')',
-         '[', ']', '...', '\'', '\"', "\''"]
-
-functionWords = ['about', 'across', 'against', 'along', 'around', 'at',
-                 'behind', 'beside', 'besides', 'by', 'despite', 'down',
-                 'during', 'for', 'from', 'in', 'inside', 'into', 'near', 'of',
-                 'off', 'on', 'onto', 'over', 'through', 'to', 'toward',
-                 'with', 'within', 'without', 'anything', 'everything',
-                 'anyone', 'everyone', 'ones', 'such', 'it', 'itself',
-                 'something', 'nothing', 'someone', 'the', 'some', 'this',
-                 'that', 'every', 'all', 'both', 'one', 'first', 'other',
-                 'next', 'many', 'much', 'more', 'most', 'several', 'no', 'a',
-                 'an', 'any', 'each', 'no', 'half', 'twice', 'two', 'second',
-                 'another', 'last', 'few', 'little', 'less', 'least', 'own',
-                 'and', 'but', 'after', 'when', 'as', 'because', 'if', 'what',
-                 'where', 'which', 'how', 'than', 'or', 'so', 'before', 'since',
-                 'while', 'although', 'though', 'who', 'whose', 'can', 'may',
-                 'will', 'shall', 'could', 'be', 'do', 'have', 'might', 'would',
-                 'should', 'must', 'here', 'there', 'now', 'then', 'always',
-                 'never', 'sometimes', 'usually', 'often', 'therefore',
-                 'however', 'besides', 'moreover', 'though', 'otherwise',
-                 'else', 'instead', 'anyway', 'incidentally', 'meanwhile']
-
 #RELS = ['gloss', 'hyponyms', 'hypernyms', 'meronyms', 'holonyms']
 RELS = ['gloss', 'hyponyms', 'hypernyms']
-
 RELPAIRS = [(r1, r2) for r1 in RELS for r2 in RELS]
-
-def remove_punctuation(tokenList):
-    result = [token for token in tokenList if token not in marks]
-    return result
 
 def overlap(gloss1, gloss2):
     """Determines the longest sequence of common words between two glosses.
@@ -187,7 +159,7 @@ def similarity(synset1, synset2):
 
 #print(score('ghost player', 'baseball superstar'))
 
-dog = wn.synsets("dog")[0]
-cat = wn.synsets("cat")[0]
-
-print(similarity(dog, cat))
+#dog = wn.synsets("dog")[0]
+#cat = wn.synsets("cat")[0]
+#
+#print(similarity(dog, cat))
