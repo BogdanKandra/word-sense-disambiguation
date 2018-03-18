@@ -169,10 +169,10 @@ def adapted_lesk(word, sentence, context_window_size = 3):
     sentence = utils.remove_punctuation(sentence)
     
     ps = PorterStemmer()
-    sentence = [ps.stem(w) for w in sentence]
+    sentenceTemp = [ps.stem(w) for w in sentence]
     
     # Extract the context window from the sentence
-    word_index = sentence.index(word)
+    word_index = sentenceTemp.index(word)
     if word_index - context_window_size < 0:
         window_words = sentence[0 : word_index + context_window_size + 1]
     else:
@@ -212,6 +212,6 @@ def adapted_lesk(word, sentence, context_window_size = 3):
 #print(similarity(dog, cat))
 #print(similarity(wn.synset('bank.n.01'), wn.synset('deposition.n.01')))
 
-#print(adapted_lesk('bank', 'The bank can guarantee deposits will eventually cover future tuition costs because it invests in adjustable-rate mortgage securities.').definition())
-#print(adapted_lesk('pine', 'pine cone').definition())
+print(adapted_lesk('bank', 'The bank can guarantee deposits will eventually cover future tuition costs because it invests in adjustable-rate mortgage securities.').definition())
+print(adapted_lesk('pine', 'pine cone').definition())
 print(adapted_lesk('bass', 'I am cooking basses').definition())
