@@ -31,6 +31,11 @@ functionWords = ['about', 'across', 'against', 'along', 'around', 'at',
                  'however', 'besides', 'moreover', 'though', 'otherwise',
                  'else', 'instead', 'anyway', 'incidentally', 'meanwhile']
 
+#RELS = ['gloss', 'hyponyms', 'hypernyms', 'meronyms', 'holonyms']
+RELS = ['gloss', 'hyponyms', 'hypernyms']
+
+RELPAIRS = [(r1, r2) for r1 in RELS for r2 in RELS]
+
 def remove_punctuation(tokenList):
     result = [token for token in tokenList if token not in marks]
     return result
@@ -129,6 +134,50 @@ def score(gloss1, gloss2):
         gloss2 = gloss2.replace(maxOverlapString, '/')
     
     return score
+
+def similarity(synset1, synset2):
+    """Calculates the similarity score between two Synsets by summing the
+    scores between two glosses (using the score procedure) obtained by applying
+    all relations in RELPAIRS.
+    
+    Arguments:
+        synset1 (Synset) -- first Synset
+        
+        synset2 (Synset) -- second Synset
+        
+    Returns:
+        int type -- the overall similarity score
+    """
+    
+    totalScore = 0
+    
+    for (r1, r2) in RELPAIRS:
+        if r1 == 'gloss':
+            synset1gloss = synset1.definition()
+        elif r1 == 'hyponyms':
+            synset1gloss = ''
+            for hypo in synset1.hyponyms():
+                synset1gloss += hypo.definition() + ' '
+        elif r1 == 'hypernyms':
+            synset1gloss = ' '
+            for hyper in synset1.hypernyms():
+                synset1gloss += hyper.definition() + ' '
+        
+        if r2 == 'gloss':
+            synset2gloss = synset2.definition()
+        elif r2 == 'hyponyms':
+            synset2gloss = ''
+            for hypo in synset2.hyponyms():
+                synset2gloss += hypo.definition() + ' '
+        elif r2 == 'hypernyms':
+            synset2gloss = ' '
+            for hyper in synset2.hypernyms():
+                synset2gloss += hyper.definition() + ' '
+        
+        totalScore += score(synset1gloss, synset2gloss)
+    
+    return totalScore
+    
     
 #print(overlap("ana are mere multe", "ana vrea sa aiba mere multe dar ana are mere multe"))
 
@@ -137,3 +186,8 @@ def score(gloss1, gloss2):
 #print(score('The house is full of rabbits and snakes', 'My house is overriden by rabbits and snakes'))
 
 #print(score('ghost player', 'baseball superstar'))
+
+dog = wn.synsets("dog")[0]
+cat = wn.synsets("cat")[0]
+
+print(similarity(dog, cat))
