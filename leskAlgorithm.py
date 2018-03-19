@@ -9,8 +9,8 @@ from nltk.tokenize import word_tokenize as w_tok
 import utils
 
 def compute_overlap(gloss, context):
-    gloss.difference(utils.FUNCTION_WORDS)
-    context.difference(utils.FUNCTION_WORDS)
+    gloss.difference(utils.STOPWORDS)
+    context.difference(utils.STOPWORDS)
     return len(gloss.intersection(context))
 
 def lesk(word, sentence):
@@ -41,9 +41,9 @@ def lesk(word, sentence):
     
     return bestSense
 
-print(lesk('bank', 'The bank can guarantee deposits will eventually cover future tuition costs because it invests in adjustable-rate mortgage securities.').definition())
-print(lesk('pine', 'pine cone').definition())
-print(lesk('bass', 'I am cooking basses').definition())
+#print(lesk('bank', 'The bank can guarantee deposits will eventually cover future tuition costs because it invests in adjustable-rate mortgage securities.').definition())
+#print(lesk('pine', 'pine cone').definition())
+#print(lesk('bass', 'I am cooking basses').definition())
 
 #for sin in wn.synsets('bank'):
 #    print(sin.definition())
