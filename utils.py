@@ -4,28 +4,32 @@ Created on Sun Mar 18 16:51:15 2018
 @author: Bogdan
 """
 
-MARKS = ['.', ',', '?', '!', ':', ';', '(', ')',
-         '[', ']', '...', '\'', '\"', "\''"]
+MARKS = ['.', ',', '?', '!', ':', ';', '(', ')', '[', ']', 
+         '...', '\'', '\"', "\''", '``', '--', '-', '$']
 
-FUNCTION_WORDS = ['about', 'across', 'against', 'along', 'around', 'at',
-                 'behind', 'beside', 'besides', 'by', 'despite', 'down',
-                 'during', 'for', 'from', 'in', 'inside', 'into', 'near', 'of',
-                 'off', 'on', 'onto', 'over', 'through', 'to', 'toward',
-                 'with', 'within', 'without', 'anything', 'everything',
-                 'anyone', 'everyone', 'ones', 'such', 'it', 'itself',
-                 'something', 'nothing', 'someone', 'the', 'some', 'this',
-                 'that', 'every', 'all', 'both', 'one', 'first', 'other',
-                 'next', 'many', 'much', 'more', 'most', 'several', 'no', 'a',
-                 'an', 'any', 'each', 'no', 'half', 'twice', 'two', 'second',
-                 'another', 'last', 'few', 'little', 'less', 'least', 'own',
-                 'and', 'but', 'after', 'when', 'as', 'because', 'if', 'what',
-                 'where', 'which', 'how', 'than', 'or', 'so', 'before', 'since',
-                 'while', 'although', 'though', 'who', 'whose', 'can', 'may',
-                 'will', 'shall', 'could', 'be', 'do', 'have', 'might', 'would',
-                 'should', 'must', 'here', 'there', 'now', 'then', 'always',
-                 'never', 'sometimes', 'usually', 'often', 'therefore',
-                 'however', 'besides', 'moreover', 'though', 'otherwise',
-                 'else', 'instead', 'anyway', 'incidentally', 'meanwhile']
+STOPWORDS = ['her', 'most', 'much', 'although', 'an', 'at', 'that', 'along', 
+                  'would', 'then', 'therefore', 'when', 'or', 'two', 'through', 
+                  'another', 'across', 'whose', 's', 'of', 'many', 'in', 'few', 
+                  'least', 'if', 'here', 'was', 'because', 'must', 'being',
+                  'something', 'should', 'than', 'me', 'for', 'since', 'against',
+                  'around', 'often', 'instead', 'are', 'where', 'about', 'a', 
+                  'might', 'over', "'re", 'ones', 'they', 'it', 'own', 'its', 
+                  'nothing', 'besides', 'can', 'next', 'have', "'m", 'during',
+                  "'d", 'toward', 'but', 'could', 'twice', 'though', 'us', 
+                  'after', 'last', 'inside', 'second', 'how', 'behind', 'did',
+                  'said', 'down', 'anyone', 'what', 'now', 'has', 'there', 
+                  "'ll", 'sometimes', 'every', 'she', 'the', 'all', 'always', 
+                  'don', 'someone', 'else', 'into', 'we', 'half', 'more', "'ve", 
+                  'their', 'such', 'from', 'usually', 'while', 'your', 'first',
+                  'do', 'incidentally', 'you', 'beside', 'he', 'shall', 'years',
+                  'so', 'his', 'everyone', 'n', 'meanwhile', 'several', 'with',
+                  'may', 'is', 'never', 'says', 'onto', 'both', "'t", "'s", 
+                  'one', 'on', 'were', 'which', 'otherwise', 'my', 'within', 
+                  'no', "don'", 'itself', 'had', 'anyway', 'anything', 'each',
+                  'not', 'up', 'some', 'them', 'also', 'despite', 'near', 'to',
+                  'this', 'who', 'any', 'off', 'before', 'will', 'been', 'other',
+                  'be', 'less', 'and', 'without', 'him', 'however', 'by', 
+                  'moreover', 'as', 'little', 'everything', 'say']
 
 def remove_punctuation(tokenList):
     result = [token for token in tokenList if token not in MARKS]
