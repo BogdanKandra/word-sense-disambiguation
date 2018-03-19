@@ -101,8 +101,8 @@ def score(gloss1, gloss2):
     gl1 = wTok(gloss1)
     gl2 = wTok(gloss2)
     
-    gl1 = [w for w in gl1 if w not in utils.FUNCTION_WORDS]
-    gl2 = [w for w in gl2 if w not in utils.FUNCTION_WORDS]
+    gl1 = [w for w in gl1 if w not in utils.STOPWORDS]
+    gl2 = [w for w in gl2 if w not in utils.STOPWORDS]
     
     gloss1 = ' '.join(gl1)
     gloss2 = ' '.join(gl2)
@@ -165,7 +165,7 @@ def adapted_lesk(word, sentence, context_window_size = 3):
     
     # Tokenize input sentence, remove stopwords and punctuation
     sentence = wTok(sentence)
-    sentence = [w for w in sentence if w not in utils.FUNCTION_WORDS]
+    sentence = [w for w in sentence if w not in utils.STOPWORDS]
     sentence = utils.remove_punctuation(sentence)
     
     ps = PorterStemmer()
