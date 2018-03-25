@@ -54,9 +54,10 @@ def simplified_lesk(word, sentence):
     
     return bestSense
 
-print(simplified_lesk('bank', 'The bank can guarantee deposits will eventually cover future tuition costs because it invests in adjustable-rate mortgage securities.').definition())
-print(simplified_lesk('pine', 'pine cone').definition())
-print(simplified_lesk('bass', 'I am cooking basses').definition())
+#print(simplified_lesk('bank', 'The bank can guarantee deposits will eventually cover future tuition costs because it invests in adjustable-rate mortgage securities.').definition())
+#print(simplified_lesk('pine', 'pine cone').definition())
+#print(simplified_lesk('bass', 'I am cooking basses').definition())
+#print(simplified_lesk('hard', 'hard cash').definition())
 
 #for sin in wn.synsets('bank'):
 #    print(sin.definition())
