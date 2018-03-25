@@ -6,12 +6,8 @@ Created on Tue Mar 13 18:16:11 2018
 
 import utils
 from nltk.corpus import wordnet as wn
-from nltk.tokenize import word_tokenize as wTok
+from nltk.tokenize import word_tokenize as w_tok
 from nltk.stem import PorterStemmer
-
-#RELS = ['gloss', 'hyponyms', 'hypernyms', 'meronyms', 'holonyms']
-RELS = ['gloss', 'hyponyms']
-RELPAIRS = [(r1, r2) for r1 in RELS for r2 in RELS]
 
 def overlap(gloss1, gloss2):
     """Determines the longest sequence of common words between two glosses.
@@ -30,8 +26,8 @@ def overlap(gloss1, gloss2):
         overlap('ghost player', 'baseball superstar') = []
     """
 
-    gl1 = wTok(gloss1)
-    gl2 = wTok(gloss2)
+    gl1 = w_tok(gloss1)
+    gl2 = w_tok(gloss2)
     
     result = []
     length = 0
@@ -41,20 +37,21 @@ def overlap(gloss1, gloss2):
         lengthTemp = 0
         
         if gl1[i] in gl2:
-            indices = [idx for idx, j in enumerate(gl2) if j == gl1[i]]
+            # The current word is also in gloss2, take the indices of their occurences
+            indices = [idx for idx, word in enumerate(gl2) if word == gl1[i]]
             
-            for index in indices:
+            for index in indices: # For each occurence
                 iCopy = i
-                lengthTemp = 1
                 resultTemp = [gl1[i]]
+                lengthTemp = 1
                 
                 cond = True
                 
-                while cond:
+                while cond:  # Check how many consecutive words match
                     if iCopy + 1 < len(gl1) and index + 1 < len(gl2):
                         iCopy += 1
-                        nextWord1 = gl1[iCopy]
                         index += 1
+                        nextWord1 = gl1[iCopy]
                         nextWord2 = gl2[index]
                         
                         if nextWord1 == nextWord2:
@@ -63,13 +60,13 @@ def overlap(gloss1, gloss2):
                         else:
                             cond = False
                             if lengthTemp > length:
-                                length = lengthTemp
                                 result = resultTemp
-                    else:
+                                length = lengthTemp
+                    else:  # We have reached the end of one of the glosses
                         cond = False
                         if lengthTemp > length:
-                            length = lengthTemp
                             result = resultTemp
+                            length = lengthTemp
         
     return result
 
@@ -91,15 +88,15 @@ def score(gloss1, gloss2):
 
     Examples:
         score('The house is full of rabbits and snakes', 'My house is overriden
-        by rabbits and snakes') = 13\n
+        by rabbits and snakes') = 13 (= 9 + 4)\n
         score('ghost player', 'baseball superstar') = 0
     """
     
     score = 0
     maxOverlap = ['.']
     
-    gl1 = wTok(gloss1)
-    gl2 = wTok(gloss2)
+    gl1 = w_tok(gloss1)
+    gl2 = w_tok(gloss2)
     
     gl1 = [w for w in gl1 if w not in utils.STOPWORDS]
     gl2 = [w for w in gl2 if w not in utils.STOPWORDS]
@@ -119,7 +116,7 @@ def score(gloss1, gloss2):
 
 def similarity(synset1, synset2):
     """Calculates the similarity score between two Synsets by summing the
-    scores between two glosses (using the score procedure) obtained by applying
+    scores between two glosses (using the *score* procedure) obtained by applying
     all relations in RELPAIRS.
     
     Arguments:
@@ -133,7 +130,7 @@ def similarity(synset1, synset2):
     
     totalScore = 0
     
-    for (r1, r2) in RELPAIRS:
+    for (r1, r2) in utils.RELPAIRS:
         if r1 == 'gloss':
             synset1gloss = synset1.definition()
         elif r1 == 'hyponyms':
@@ -161,14 +158,13 @@ def similarity(synset1, synset2):
     return totalScore
 
 def adapted_lesk(word, sentence, context_window_size = 3):
-    best_score = 0
-    
+
     # Tokenize input sentence, remove stopwords and punctuation
-    sentence = wTok(sentence)
+    sentence = w_tok(sentence)
     sentence = [w for w in sentence if w not in utils.STOPWORDS]
     sentence = utils.remove_punctuation(sentence)
     
-    ps = PorterStemmer()
+    ps = PorterStemmer()  #  ??????
     sentenceTemp = [ps.stem(w) for w in sentence]
     
     # Extract the context window from the sentence
@@ -180,38 +176,35 @@ def adapted_lesk(word, sentence, context_window_size = 3):
                                 word_index + context_window_size + 1]
 
     # Take the Synsets of the target word
-    word_senses = wn.synsets(word)
-    best_sense = word_senses[0]
+    senses = wn.synsets(word)
+    best_sense = senses[0]
+    best_score = 0
     
-    for word_sense in word_senses:
+    for sense in senses:
         score = 0
 
         for w in window_words:
-            if w != word:
+            if w != word:   # ??? Stemming issues
                 w_senses = wn.synsets(w)
 
                 for w_sense in w_senses:
-                    score += similarity(word_sense, w_sense)
+                    score += similarity(sense, w_sense)
 
         if score > best_score:
             best_score = score
-            best_sense = word_sense
+            best_sense = sense
     
     return best_sense
 
     
 #print(overlap("ana are mere multe", "ana vrea sa aiba mere multe dar ana are mere multe"))
-
 #print(score("ana are mere multe", "ana vrea sa aiba mere multe dar ana are mere multe"))
-#print(score('The house is full of rabbits and snakes', 'My house is overriden by rabbits and snakes'))
-#print(score('ghost player', 'baseball superstar'))
-
-#dog = wn.synsets("dog")[0]
-#cat = wn.synsets("cat")[0]
-#
-#print(similarity(dog, cat))
-#print(similarity(wn.synset('bank.n.01'), wn.synset('deposition.n.01')))
 
 print(adapted_lesk('bank', 'The bank can guarantee deposits will eventually cover future tuition costs because it invests in adjustable-rate mortgage securities.').definition())
 print(adapted_lesk('pine', 'pine cone').definition())
 print(adapted_lesk('bass', 'I am cooking basses').definition())
+
+### TODO
+# See about stemming issues
+# Setup testing with Senseval
+# Examples in the glosses ?
