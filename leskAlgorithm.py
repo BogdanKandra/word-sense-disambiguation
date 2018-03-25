@@ -27,9 +27,9 @@ def simplified_lesk(word, sentence):
     bestSense = senses[0] # Initialise as the most frequent sense of the word
     maxOverlap = 0
     
-    sentTokenized = w_tok(sentence)  # Tokenize the context phrase
-    sentNormalized = utils.remove_punctuation(sentTokenized)
-    context = set(sentNormalized).difference(utils.STOPWORDS)  # Remove Stopwords
+    sentence = w_tok(sentence)  # Tokenize the context phrase
+    sentence = utils.remove_punctuation(sentence)
+    context = set(sentence).difference(utils.STOPWORDS)  # Remove Stopwords
     
     for sense in senses:
         # For each sense, build its gloss by taking its definition, examples,
