@@ -6,7 +6,7 @@ Created on Wed Mar  7 19:40:20 2018
 
 from nltk.corpus import wordnet as wn
 from nltk.tokenize import word_tokenize as w_tok
-import utils
+import wordnet_utils as utils
 
 def simplified_lesk(word, sentence):
     """Determines the WordNet sense of **word** in the given **context**,
