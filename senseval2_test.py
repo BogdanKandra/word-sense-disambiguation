@@ -29,8 +29,10 @@ def senseval_test_adapted_lesk(corpus=None):
             total_cases += 1
             context = utils.get_context(instance)
             sense = alesk(corpus, context)
-            if utils.WORDNET_SENSEVAL_DICT[sense.name()] == instance.senses[0]:
-                correct_cases += 1
+            if utils.WORDNET_SENSEVAL_DICT.get(sense.name()) is not None:
+                if utils.WORDNET_SENSEVAL_DICT[sense.name()] == instance.senses[0]:
+                    correct_cases += 1
+                    print(correct_cases, "out of", total_cases)
         
         return correct_cases / total_cases
     else:
