@@ -4,14 +4,36 @@ Created on Tue Mar 27 13:31:52 2018
 @author: Bogdan
 """
 
-from nltk.corpus import wordnet as wn
 from nltk.corpus import senseval
 from adaptedLeskAlgorithm import adapted_lesk as alesk
 import wordnet_utils as utils
 
-def line_test():        
-        instances = senseval.instances('hard.pos')
+def senseval_test_adapted_lesk(corpus=None):
+    """
+    Tests the Adapted Lesk Algorithm against the Senseval-2 corpus.
+    
+    Arguments:
+        corpus (str) -- one of the corpora contained in Senseval-2
+    
+    Returns:
+        float type -- the percentage of correct results
         
+        0 -- if the argument provided is not 'line', 'hard', 'serve' or 'interest'
+    """
+    if corpus in ['line', 'hard', 'serve', 'interest']:
+        instances = senseval.instances(corpus + '.pos')
+        total_cases = 0
+        correct_cases = 0
         
+        for instance in instances:
+            total_cases += 1
+            context = utils.get_context(instance)
+            sense = alesk(corpus, context)
+            if utils.WORDNET_SENSEVAL_DICT[sense.name()] == instance.senses[0]:
+                correct_cases += 1
         
-        
+        return correct_cases / total_cases
+    else:
+        return 0
+
+print(senseval_test_adapted_lesk('line'))
