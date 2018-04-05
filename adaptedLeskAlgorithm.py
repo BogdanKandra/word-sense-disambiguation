@@ -4,7 +4,7 @@ Created on Tue Mar 13 18:16:11 2018
 @author: Bogdan
 """
 
-import utils
+import wsd_utils as utils
 from nltk.corpus import wordnet as wn
 from nltk.tokenize import word_tokenize as w_tok
 from nltk.stem import PorterStemmer
@@ -168,43 +168,48 @@ def adapted_lesk(word, sentence, context_window_size = 3):
     sentenceTemp = [ps.stem(w) for w in sentence]
     
     # Extract the context window from the sentence
-    word_index = sentenceTemp.index(word)
-    if word_index - context_window_size < 0:
-        window_words = sentence[0 : word_index + context_window_size + 1]
-    else:
-        window_words = sentence[word_index - context_window_size : 
-                                word_index + context_window_size + 1]
-
-    # Take the Synsets of the target word
-    senses = wn.synsets(word)
-    best_sense = senses[0]
-    best_score = 0
+    if word in sentenceTemp:
+        word_index = sentenceTemp.index(word)
+        if word_index - context_window_size < 0:
+            window_words = sentence[0 : word_index + context_window_size + 1]
+        else:
+            window_words = sentence[word_index - context_window_size : 
+                                    word_index + context_window_size + 1]
     
-    for sense in senses:
-        score = 0
-
-        for w in window_words:
-            if w != word:   # ??? Stemming issues
-                w_senses = wn.synsets(w)
-
-                for w_sense in w_senses:
-                    score += similarity(sense, w_sense)
-
-        if score > best_score:
-            best_score = score
-            best_sense = sense
+        # Take the Synsets of the target word
+        senses = wn.synsets(word)
+        best_sense = senses[0]
+        best_score = 0
+        
+        for sense in senses:
+            score = 0
     
+            for w in window_words:
+                if w != word:   # ??? Stemming issues
+                    w_senses = wn.synsets(w)
+    
+                    for w_sense in w_senses:
+                        score += similarity(sense, w_sense)
+    
+            if score > best_score:
+                best_score = score
+                best_sense = sense
+    else:  # If target word is not in context, after stemming, return first wordnet sense
+        print('guessed:')
+        return wn.synsets(word)[0]
+    
+    print('computed')
     return best_sense
 
     
 #print(overlap("ana are mere multe", "ana vrea sa aiba mere multe dar ana are mere multe"))
 #print(score("ana are mere multe", "ana vrea sa aiba mere multe dar ana are mere multe"))
 
-print(adapted_lesk('bank', 'The bank can guarantee deposits will eventually cover future tuition costs because it invests in adjustable-rate mortgage securities.').definition())
-print(adapted_lesk('pine', 'pine cone').definition())
-print(adapted_lesk('bass', 'I am cooking basses').definition())
+#print(adapted_lesk('bank', 'The bank can guarantee deposits will eventually cover future tuition costs because it invests in adjustable-rate mortgage securities.').definition())
+#print(adapted_lesk('pine', 'pine cone').definition())
+#print(adapted_lesk('bass', 'I am cooking basses').definition())
 
 ### TODO
 # See about stemming issues
-# Setup testing with Senseval
 # Examples in the glosses ?
+# Check the considered RELS
