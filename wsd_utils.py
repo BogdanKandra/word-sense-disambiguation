@@ -40,7 +40,7 @@ WORDNET_SENSEVAL_DICT = {
     'hard.s.04' : 'HARD3',
     'arduous.s.01' : 'HARD1',
     'unvoiced.a.01' : 'HARD2',
-    'hard.a.08' : 'HARD2',
+    'hard.a.08' : 'HARD1',
     'intemperate.s.03' : 'HARD2',
     'hard.s.10' : 'HARD2',
     'hard.s.11' : 'HARD2',
