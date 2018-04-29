@@ -230,3 +230,5 @@ def pretty(sense):
 # If pos tagging, I should take into consideration only relations pertaining to the pos of target words
 #   and should look only to relevant pos words
 # If not pos tagging, I should take into account all relations
+# Resolve the 'not found' issue by taking into account only the relevant candidate
+    # senses; for example if evaluating line, consider only senses which are nouns
