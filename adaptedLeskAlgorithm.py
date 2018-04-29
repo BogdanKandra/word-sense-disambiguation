@@ -133,7 +133,7 @@ def similarity(synset1, synset2):
     
     for (r1, r2) in utils.RELPAIRS:
         if r1 == 'gloss':
-            synset1gloss = synset1.definition()
+            synset1gloss = synset1.definition() + ' '
         elif r1 == 'hyponyms':
             synset1gloss = ''
             for hypo in synset1.hyponyms():
@@ -142,6 +142,10 @@ def similarity(synset1, synset2):
             synset1gloss = ''
             for hyper in synset1.hypernyms():
                 synset1gloss += hyper.definition() + ' '
+                
+        syn1examples = ' '.join(synset1.examples())
+        if syn1examples != '':
+            synset1gloss += syn1examples
         
         if r2 == 'gloss':
             synset2gloss = synset2.definition()
@@ -153,6 +157,10 @@ def similarity(synset1, synset2):
             synset2gloss = ''
             for hyper in synset2.hypernyms():
                 synset2gloss += hyper.definition() + ' '
+        
+        syn2examples = ' '.join(synset2.examples())
+        if syn2examples != '':
+            synset2gloss += syn2examples
         
         totalScore += score(synset1gloss, synset2gloss)
     
@@ -211,13 +219,13 @@ def adapted_lesk(word, sentence, context_window_size = 3):
     
 #print(overlap("ana are mere multe", "ana vrea sa aiba mere multe dar ana are mere multe"))
 #print(score("ana are mere multe", "ana vrea sa aiba mere multe dar ana are mere multe"))
+#print(similarity(wn.synset('hard.r.03'), wn.synset('hard.a.02')))
 
 #print(adapted_lesk('bank', 'The bank can guarantee deposits will eventually cover future tuition costs because it invests in adjustable-rate mortgage securities.').definition())
 #print(adapted_lesk('pine', 'pine cone').definition())
 #print(adapted_lesk('bass', 'I am cooking basses').definition())
 
 ### TODO
-# Examples in the glosses ? YES
 # Check the considered RELS
 # If pos tagging, I should take into consideration only relations pertaining to the pos of target words
 #   and should look only to relevant pos words
