@@ -4,18 +4,19 @@ Created on Tue Mar 13 18:16:11 2018
 @author: Bogdan
 """
 
-import wsd_utils as utils
 from nltk.corpus import wordnet as wn
 from nltk.tokenize import word_tokenize as w_tok
-from nltk.stem import PorterStemmer
+from nltk.stem import WordNetLemmatizer
+from nltk.tag import pos_tag
+import wsd_utils as utils
 
 def overlap(gloss1, gloss2):
-    """Determines the longest sequence of common words between two glosses.
+    """Determines the longest sequence of common words between two **glosses**.
     
     Arguments:
-        gloss1 (str) -- first gloss
+        *gloss1* (str) -- first gloss
 
-        gloss2 (str) -- second gloss
+        *gloss2* (str) -- second gloss
     
     Returns:
         list(str) type -- the longest sequence of common words, as a list
@@ -71,17 +72,17 @@ def overlap(gloss1, gloss2):
     return result
 
 def score(gloss1, gloss2):
-    """Calculates the score of the given pair of glosses using the following
-    algorithm:\n
+    """Calculates the score of the given pair of **glosses** using the
+    following algorithm:\n
     1. Compute the longest overlap between the glosses \n
     2. Add the square of the length of the overlap to the total score \n
     3. Replace the longest overlap with markers in both glosses \n
     4. Repeat from step 1 until there are no overlaps between the glosses
 
     Arguments:
-        gloss1 (str) -- first gloss
+        *gloss1* (str) -- first gloss
 
-        gloss2 (str) -- second gloss
+        *gloss2* (str) -- second gloss
 
     Returns:
         int type -- the score of the pair of glosses
@@ -117,7 +118,7 @@ def score(gloss1, gloss2):
 def similarity(synset1, synset2):
     """Calculates the similarity score between two Synsets by summing the
     scores between two glosses (using the *score* procedure) obtained by applying
-    all relations in RELPAIRS.
+    all relations in RELPAIRS over the synsets.
     
     Arguments:
         synset1 (Synset) -- first Synset
@@ -159,17 +160,23 @@ def similarity(synset1, synset2):
 
 def adapted_lesk(word, sentence, context_window_size = 3):
 
-    # Tokenize input sentence, remove stopwords and punctuation
-    sentence = w_tok(sentence)
-    sentence = [w for w in sentence if w not in utils.STOPWORDS]
-    sentence = utils.remove_punctuation(sentence)
+    # Tokenize input sentence, remove punctuation and stopwords
+    sentence = utils.remove_stopwords(utils.remove_punctuation(w_tok(sentence)))
+
+    # Perform lemmatization on sentence
+    lemmatizer = WordNetLemmatizer()
+    tagged_sentence = pos_tag(sentence)
     
-    ps = PorterStemmer()  #  ??????
-    sentenceTemp = [ps.stem(w) for w in sentence]
+    sentence = [lemmatizer.lemmatize(tup[0], utils.get_wordnet_pos(tup[1])) 
+                for tup in tagged_sentence]
+    
+    # Perform lemmatization on target word
+    tagged_word = pos_tag(word)
+    word = lemmatizer.lemmatize(tagged_word[0], utils.get_wordnet_pos(tagged_word[1]))
     
     # Extract the context window from the sentence
-    if word in sentenceTemp:
-        word_index = sentenceTemp.index(word)
+    if word in sentence:
+        word_index = sentence.index(word)
         if word_index - context_window_size < 0:
             window_words = sentence[0 : word_index + context_window_size + 1]
         else:
@@ -185,7 +192,7 @@ def adapted_lesk(word, sentence, context_window_size = 3):
             score = 0
     
             for w in window_words:
-                if w != word:   # ??? Stemming issues
+                if w != word:
                     w_senses = wn.synsets(w)
     
                     for w_sense in w_senses:
@@ -194,11 +201,11 @@ def adapted_lesk(word, sentence, context_window_size = 3):
             if score > best_score:
                 best_score = score
                 best_sense = sense
-    else:  # If target word is not in context, after stemming, return first wordnet sense
+    else:  # If target word is not in context, after lemmatizing, return first wordnet sense
         print('guessed:')
         return wn.synsets(word)[0]
     
-    print('computed')
+    print('computed:')
     return best_sense
 
     
@@ -210,7 +217,6 @@ def adapted_lesk(word, sentence, context_window_size = 3):
 #print(adapted_lesk('bass', 'I am cooking basses').definition())
 
 ### TODO
-# See about stemming issues -- maybe lemmatizer
 # Examples in the glosses ? YES
 # Check the considered RELS
 # If pos tagging, I should take into consideration only relations pertaining to the pos of target words
