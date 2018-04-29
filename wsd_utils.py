@@ -163,3 +163,5 @@ def get_wordnet_pos(tag):
         return 'r'
     elif tag.startswith('J'): # Adjective
         return 'a'
+    else:                     # Adjective Satellite ??
+        return 's'
