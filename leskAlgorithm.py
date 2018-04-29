@@ -6,10 +6,10 @@ Created on Wed Mar  7 19:40:20 2018
 
 from nltk.corpus import wordnet as wn
 from nltk.tokenize import word_tokenize as w_tok
-import wordnet_utils as utils
+import wsd_utils as utils
 
 def simplified_lesk(word, sentence):
-    """Determines the WordNet sense of **word** in the given **context**,
+    """Determines the WordNet sense of **word** in the given **sentence**,
     using the Simplified Lesk Algorithm. \n
 
     Arguments:
@@ -34,7 +34,7 @@ def simplified_lesk(word, sentence):
     for sense in senses:
         # For each sense, build its gloss by taking its definition, examples,
         # hyponyms and examples of hyponyms
-        # TODO -- Maybe hyponyms shouldn't be included
+        # TODO -- Maybe hyponyms shouldn't be included in this algorithm
         gloss = set(utils.remove_punctuation(w_tok(sense.definition())))
         for ex in sense.examples():
             gloss.union(w_tok(ex))
@@ -54,10 +54,11 @@ def simplified_lesk(word, sentence):
     
     return bestSense
 
-#print(simplified_lesk('bank', 'The bank can guarantee deposits will eventually cover future tuition costs because it invests in adjustable-rate mortgage securities.').definition())
-#print(simplified_lesk('pine', 'pine cone').definition())
-#print(simplified_lesk('bass', 'I am cooking basses').definition())
-#print(simplified_lesk('hard', 'hard cash').definition())
+def pretty(sense):
+    print(sense)
+    print(sense.definition())
 
-#for sin in wn.synsets('bank'):
-#    print(sin.definition())
+#pretty(simplified_lesk('bank', 'The bank can guarantee deposits will eventually cover future tuition costs because it invests in adjustable-rate mortgage securities.'))
+#pretty(simplified_lesk('pine', 'pine cone'))
+#pretty(simplified_lesk('bass', 'I am cooking basses'))
+#pretty(simplified_lesk('hard', 'hard cash'))
