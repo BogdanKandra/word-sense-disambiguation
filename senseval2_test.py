@@ -40,9 +40,14 @@ def senseval_test_adapted_lesk(corpus=None):
             else:
                 print(correct_cases, "out of", total_cases, " (not found) - ", sense.name())
                 not_found += 1
-            print('correct:', correct_cases, 
-                  '; incorrect:', total_cases - correct_cases, 
-                  '; not found:', not_found)
+                file_notFound = open("notFound.txt", "a")
+                file_notFound.write(sense.name() + '\n')
+                file_notFound.close()
+                
+            file_results = open("results.txt", "a")
+            line_write = "correct: " + str(correct_cases) + "; incorrect: " + str(total_cases - correct_cases) + "; not found: " + str(not_found) + '\n'
+            file_results.write(line_write)
+            file_results.close()
         
         return correct_cases / total_cases
     else:
