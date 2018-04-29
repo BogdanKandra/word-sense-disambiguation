@@ -152,3 +152,14 @@ def sense_instances(instances, sense):
 # Returns a string containing the concatenated context field of a Senseval instance
 def get_context(instance):
     return " ".join([pair[0] for pair in instance.context])
+
+# Converts a nltk.pos_tag tag into a nltk lemmatizer compatible tag
+def get_wordnet_pos(tag):
+    if tag.startswith('N'):   # Noun
+        return 'n'
+    elif tag.startswith('V'): # Verb
+        return 'v'
+    elif tag.startswith('R'): # Adverb
+        return 'r'
+    elif tag.startswith('J'): # Adjective
+        return 'a'
