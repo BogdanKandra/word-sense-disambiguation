@@ -96,15 +96,10 @@ def score(gloss1, gloss2):
     score = 0
     maxOverlap = ['.']
     
-    gl1 = w_tok(gloss1)
-    gl2 = w_tok(gloss2)
-    
-    gl1 = [w for w in gl1 if w not in utils.STOPWORDS]
-    gl2 = [w for w in gl2 if w not in utils.STOPWORDS]
-    
-    gloss1 = ' '.join(gl1)
-    gloss2 = ' '.join(gl2)
-    
+    # Normalize the glosses
+    gloss1 = ' '.join(utils.remove_stopwords(utils.remove_punctuation(w_tok(gloss1))))
+    gloss2 = ' '.join(utils.remove_stopwords(utils.remove_punctuation(w_tok(gloss2))))
+
     while maxOverlap != []:
         maxOverlap = overlap(gloss1, gloss2)
         score += len(maxOverlap)**2
@@ -179,8 +174,9 @@ def adapted_lesk(word, sentence, context_window_size = 3):
                 for tup in tagged_sentence]
     
     # Perform lemmatization on target word
-    tagged_word = pos_tag(word)
-    word = lemmatizer.lemmatize(tagged_word[0], utils.get_wordnet_pos(tagged_word[1]))
+    tagged_word = pos_tag([word])
+    word = lemmatizer.lemmatize(tagged_word[0][0], 
+                                utils.get_wordnet_pos(tagged_word[0][1]))
     
     # Extract the context window from the sentence
     if word in sentence:
@@ -216,14 +212,18 @@ def adapted_lesk(word, sentence, context_window_size = 3):
     print('computed:')
     return best_sense
 
-    
+def pretty(sense):
+    print(sense)
+    print(sense.definition())
+
 #print(overlap("ana are mere multe", "ana vrea sa aiba mere multe dar ana are mere multe"))
 #print(score("ana are mere multe", "ana vrea sa aiba mere multe dar ana are mere multe"))
 #print(similarity(wn.synset('hard.r.03'), wn.synset('hard.a.02')))
 
-#print(adapted_lesk('bank', 'The bank can guarantee deposits will eventually cover future tuition costs because it invests in adjustable-rate mortgage securities.').definition())
-#print(adapted_lesk('pine', 'pine cone').definition())
-#print(adapted_lesk('bass', 'I am cooking basses').definition())
+#pretty(adapted_lesk('bank', 'The bank can guarantee deposits will eventually cover future tuition costs because it invests in adjustable-rate mortgage securities.'))
+#pretty(adapted_lesk('pine', 'pine cone'))
+#pretty(adapted_lesk('bass', 'I am cooking basses'))
+#pretty(adapted_lesk('hard', 'hard cash'))
 
 ### TODO
 # Check the considered RELS
