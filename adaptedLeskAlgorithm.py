@@ -210,6 +210,9 @@ def adapted_lesk(word, sentence, context_window_size = 3):
 #print(adapted_lesk('bass', 'I am cooking basses').definition())
 
 ### TODO
-# See about stemming issues
-# Examples in the glosses ?
+# See about stemming issues -- maybe lemmatizer
+# Examples in the glosses ? YES
 # Check the considered RELS
+# If pos tagging, I should take into consideration only relations pertaining to the pos of target words
+#   and should look only to relevant pos words
+# If not pos tagging, I should take into account all relations
