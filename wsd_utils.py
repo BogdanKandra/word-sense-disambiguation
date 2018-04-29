@@ -131,6 +131,10 @@ HARD_SENSES = ['HARD1', 'HARD2', 'HARD3']
 SERVE_SENSES = ['SERVE2', 'SERVE10', 'SERVE6', 'SERVE12']
 INTEREST_SENSES = ['interest_1', 'interest_2', 'interest_3', 'interest_4', 'interest_5', 'interest_6']
 
+# Removes stopwords from a token list
+def remove_stopwords(tokenList):
+    return [token for token in tokenList if token not in STOPWORDS]
+
 # Removes punctuation from a token list
 def remove_punctuation(tokenList):
     return [token for token in tokenList if token not in MARKS]
