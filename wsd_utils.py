@@ -122,7 +122,7 @@ MARKS = ['.', ',', '?', '!', ':', ';', '(', ')', '[', ']',
          '...', '\'', '\"', "\''", '``', '--', '-', '$']
 
 #RELS = ['gloss', 'hyponyms', 'hypernyms', 'meronyms', 'holonyms']
-RELS = ['gloss', 'hyponyms']
+RELS = ['gloss', 'hyponyms', 'meronyms'] # For Nouns
 RELPAIRS = [(r1, r2) for r1 in RELS for r2 in RELS]
 
 # Possible senses of each word in Senseval-2
