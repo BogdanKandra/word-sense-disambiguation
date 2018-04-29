@@ -25,6 +25,7 @@ def senseval_test_adapted_lesk(corpus=None):
         instances = senseval.instances(corpus + '.pos')
         total_cases = 0
         correct_cases = 0
+        not_found = 0
         
         for instance in instances:
             total_cases += 1
@@ -38,6 +39,10 @@ def senseval_test_adapted_lesk(corpus=None):
                     print(correct_cases, "out of", total_cases, " (incorrect) - Got ", sense.name(), 'correct was ', instance.senses[0])
             else:
                 print(correct_cases, "out of", total_cases, " (not found) - ", sense.name())
+                not_found += 1
+            print('correct:', correct_cases, 
+                  '; incorrect:', total_cases - correct_cases, 
+                  '; not found:', not_found)
         
         return correct_cases / total_cases
     else:
