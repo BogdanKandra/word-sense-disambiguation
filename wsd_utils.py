@@ -182,3 +182,35 @@ def get_wordnet_pos(tag):
         return 'a'
     else:                     # Adjective Satellite ??
         return 's'
+
+def compute_gloss(relation, synset):
+    gloss = ''
+    
+    if relation == 'gloss':
+        gloss = synset.definition()
+    elif relation == 'examples':
+        gloss = ' '.join(synset.examples())
+    elif relation == 'hyponyms':
+        for hypo in synset.hyponyms():
+            gloss += hypo.definition() + ' '
+    elif relation == 'hypernyms':
+        for hyper in synset.hypernyms():
+            gloss += hyper.definition() + ' '
+    elif relation == 'meronyms':
+        meronyms = synset.part_meronyms() + synset.substance_meronyms() + \
+                   synset.member_meronyms()
+        for mero in meronyms:
+            gloss += mero.definition() + ' '
+    elif relation == 'holonyms':
+        holonyms = synset.part_holonyms() + synset.substance_holonyms() + \
+                   synset.member_holonyms()
+        for holo in holonyms:
+            gloss += holo.definition() + ' '
+    elif relation == 'also-see':
+        for see in synset.also_sees():
+            gloss += see.definition() + ' '
+    elif relation == 'attribute':
+        for att in synset.attributes():
+            gloss += att.definition() + ' '
+    
+    return gloss
