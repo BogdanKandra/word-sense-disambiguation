@@ -121,9 +121,26 @@ STOPWORDS = ['her', 'most', 'much', 'although', 'an', 'at', 'that', 'along',
 MARKS = ['.', ',', '?', '!', ':', ';', '(', ')', '[', ']', 
          '...', '\'', '\"', "\''", '``', '--', '-', '$']
 
-#RELS = ['gloss', 'hyponyms', 'hypernyms', 'meronyms', 'holonyms']
-RELS = ['gloss', 'hyponyms', 'meronyms'] # For Nouns
-RELPAIRS = [(r1, r2) for r1 in RELS for r2 in RELS]
+RELS_ALL = ['gloss', 'examples', 'hyponyms', 'hypernyms', 'meronyms', 'holonyms', 'also-see', 'attribute']
+RELS_NOUNS = ['gloss', 'examples', 'hyponyms', 'meronyms']  # For Nouns
+RELS_ADJS  = ['gloss', 'examples', 'also-see', 'attribute'] # For Adjectives
+RELS_VERBS = ['gloss', 'examples', 'hyponyms']              # For Verbs
+
+def define_relpairs(pos=None):
+    if pos == None:
+        RELS = RELS_ALL
+    else:
+        if pos == 'n':
+            RELS = RELS_NOUNS
+        elif pos == 'a':
+            RELS = RELS_ADJS
+        elif pos == 'v':
+            RELS = RELS_VERBS
+        else:
+            raise ValueError
+    
+    RELPAIRS = [(r1, r2) for r1 in RELS for r2 in RELS]
+    return RELPAIRS
 
 # Possible senses of each word in Senseval-2
 LINE_SENSES = ['division', 'product', 'cord', 'text', 'formation', 'phone']
