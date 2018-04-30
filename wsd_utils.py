@@ -126,6 +126,13 @@ RELS_NOUNS = ['gloss', 'examples', 'hyponyms', 'meronyms']  # For Nouns
 RELS_ADJS  = ['gloss', 'examples', 'also-see', 'attribute'] # For Adjectives
 RELS_VERBS = ['gloss', 'examples', 'hyponyms']              # For Verbs
 
+# Possible senses of each word in Senseval-2
+LINE_SENSES = ['division', 'product', 'cord', 'text', 'formation', 'phone']
+HARD_SENSES = ['HARD1', 'HARD2', 'HARD3']
+SERVE_SENSES = ['SERVE2', 'SERVE10', 'SERVE6', 'SERVE12']
+INTEREST_SENSES = ['interest_1', 'interest_2', 'interest_3', 'interest_4', 'interest_5', 'interest_6']
+
+# Builds the RELPAIRS list, relative to the provided pos
 def define_relpairs(pos=None):
     if pos == None:
         RELS = RELS_ALL
@@ -141,12 +148,6 @@ def define_relpairs(pos=None):
     
     RELPAIRS = [(r1, r2) for r1 in RELS for r2 in RELS]
     return RELPAIRS
-
-# Possible senses of each word in Senseval-2
-LINE_SENSES = ['division', 'product', 'cord', 'text', 'formation', 'phone']
-HARD_SENSES = ['HARD1', 'HARD2', 'HARD3']
-SERVE_SENSES = ['SERVE2', 'SERVE10', 'SERVE6', 'SERVE12']
-INTEREST_SENSES = ['interest_1', 'interest_2', 'interest_3', 'interest_4', 'interest_5', 'interest_6']
 
 # Removes stopwords from a token list
 def remove_stopwords(tokenList):
@@ -183,6 +184,7 @@ def get_wordnet_pos(tag):
     else:                     # Adjective Satellite ??
         return 's'
 
+# Computes the gloss of a Synset using only the provided relation
 def compute_gloss(relation, synset):
     gloss = ''
     
