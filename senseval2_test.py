@@ -27,6 +27,8 @@ def senseval_test_adapted_lesk(corpus=None):
         correct_cases = 0
         not_found = 0
         
+        f_results = open("logs/nopos_results.txt", "a")
+        
         for instance in instances:
             total_cases += 1
             context = utils.get_context(instance)
@@ -38,18 +40,22 @@ def senseval_test_adapted_lesk(corpus=None):
                 else:
                     print(correct_cases, "out of", total_cases, " (incorrect) - Got ", sense.name(), 'correct was ', instance.senses[0])
             else:
-                print(correct_cases, "out of", total_cases, " (not found) - ", sense.name())
                 not_found += 1
-                file_notFound = open("notFound.txt", "a")
-                file_notFound.write(sense.name() + '\n')
-                file_notFound.close()
+                print(correct_cases, "out of", total_cases, " (not found) - ", sense.name(), 'correct was ', instance.senses[0])
+                f_notFound = open("logs/nopos_notFound.txt", "a")
+                line_write = "sense: " + sense.name() + "; correct was: " + instance.senses[0]
+                f_notFound.write(line_write + '\n')
+                f_notFound.close()
                 
-            file_results = open("results.txt", "a")
-            line_write = "correct: " + str(correct_cases) + "; incorrect: " + str(total_cases - correct_cases) + "; not found: " + str(not_found) + '\n'
-            file_results.write(line_write)
-            file_results.close()
+            # Write the current result to file
+            line_write = "correct: " + str(correct_cases) + "; incorrect: " + str(total_cases - correct_cases) + "; not found: " + str(not_found)
+            f_results.write(line_write + '\n')
         
-        return correct_cases / total_cases
+        accuracy = correct_cases / total_cases
+        f_results.write("Accuracy: " + str(accuracy))
+        f_results.close()
+        
+        return accuracy
     else:
         return 0
 
