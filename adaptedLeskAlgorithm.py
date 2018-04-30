@@ -164,6 +164,7 @@ def adapted_lesk(word, sentence, context_window_size=3, pos=None):
         tagged_word = pos_tag([word])
         word = lemmatizer.lemmatize(tagged_word[0][0], 
                                     utils.get_wordnet_pos(tagged_word[0][1]))
+        pos = utils.get_wordnet_pos(tagged_word[0][1])
     else:
         word = lemmatizer.lemmatize(word, pos)
     
@@ -182,18 +183,20 @@ def adapted_lesk(word, sentence, context_window_size=3, pos=None):
         best_score = 0
         
         for sense in senses:
-            score = 0
-    
-            for w in window_words:
-                if w != word:
-                    w_senses = wn.synsets(w)
-    
-                    for w_sense in w_senses:
-                        score += similarity(sense, w_sense)
-    
-            if score > best_score:
-                best_score = score
-                best_sense = sense
+            if sense.pos() == pos:
+                # Only take the current sense into account if it is the correct pos
+                score = 0
+        
+                for w in window_words:
+                    if w != word:
+                        w_senses = wn.synsets(w)
+        
+                        for w_sense in w_senses:
+                            score += similarity(sense, w_sense)
+        
+                if score > best_score:
+                    best_score = score
+                    best_sense = sense
     else:  # If target word is not in context, after lemmatizing, return first wordnet sense
         f = open('logs/nopos_guessed', 'a')
         line = "word: " + word + " in sentence: " + ' '.join(sentence)
