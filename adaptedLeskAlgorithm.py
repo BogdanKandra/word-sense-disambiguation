@@ -160,9 +160,12 @@ def adapted_lesk(word, sentence, context_window_size=3, pos=None):
                 for tup in tagged_sentence]
     
     # Perform lemmatization on target word
-    tagged_word = pos_tag([word])
-    word = lemmatizer.lemmatize(tagged_word[0][0], 
-                                utils.get_wordnet_pos(tagged_word[0][1]))
+    if pos == None:
+        tagged_word = pos_tag([word])
+        word = lemmatizer.lemmatize(tagged_word[0][0], 
+                                    utils.get_wordnet_pos(tagged_word[0][1]))
+    else:
+        word = lemmatizer.lemmatize(word, pos)
     
     # Extract the context window from the sentence
     if word in sentence:
@@ -192,10 +195,12 @@ def adapted_lesk(word, sentence, context_window_size=3, pos=None):
                 best_score = score
                 best_sense = sense
     else:  # If target word is not in context, after lemmatizing, return first wordnet sense
-        print('guessed:')
+        f = open('logs/nopos_guessed', 'a')
+        line = "word: " + word + " in sentence: " + ' '.join(sentence)
+        f.write(line + '\n')
+        f.close()
         return wn.synsets(word)[0]
     
-    print('computed:')
     return best_sense
 
 def pretty(sense):
@@ -207,8 +212,8 @@ def pretty(sense):
 #print(score("every dog has its day", "don't make has Decisions"))
 #print(similarity(wn.synset('hard.r.03'), wn.synset('hard.a.02')))
 
-pretty(adapted_lesk('bank', 'The bank can guarantee deposits will eventually cover future tuition costs because it invests in adjustable-rate mortgage securities.'))
-#pretty(adapted_lesk('pine', 'pine cone'))
+#pretty(adapted_lesk('bank', 'The bank can guarantee deposits will eventually cover future tuition costs because it invests in adjustable-rate mortgage securities.'))
+#pretty(adapted_lesk('cone', 'pine cone'))
 #pretty(adapted_lesk('bass', 'I am cooking basses'))
 #pretty(adapted_lesk('hard', 'hard cash'))
 
