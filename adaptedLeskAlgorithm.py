@@ -116,8 +116,9 @@ def similarity(synset1, synset2, pos=None):
     all relations in RELPAIRS over the synsets.
     
     Arguments:
-        synset1 (Synset) -- first Synset \n
-        synset2 (Synset) -- second Synset
+        *synset1* (Synset) -- first Synset \n
+        *synset2* (Synset) -- second Synset \n
+        *pos* (str) -- the part of speech of the word to be disambiguated
         
     Returns:
         int type -- the overall similarity score
@@ -126,62 +127,8 @@ def similarity(synset1, synset2, pos=None):
     totalScore = 0
     
     for (r1, r2) in utils.define_relpairs(pos):
-        synset1gloss = ''
-        synset2gloss = ''
-        
-        if r1 == 'gloss':
-            synset1gloss = synset1.definition()
-        elif r1 == 'examples':
-            synset1gloss = ' '.join(synset1.examples())
-        elif r1 == 'hyponyms':
-            for hypo in synset1.hyponyms():
-                synset1gloss += hypo.definition() + ' '
-        elif r1 == 'hypernyms':
-            for hyper in synset1.hypernyms():
-                synset1gloss += hyper.definition() + ' '
-        elif r1 == 'meronyms':
-            meronyms = synset1.part_meronyms() + synset1.substance_meronyms() + \
-                       synset1.member_meronyms()
-            for mero in meronyms:
-                synset1gloss += mero.definition() + ' '
-        elif r1 == 'holonyms':
-            holonyms = synset1.part_holonyms() + synset1.substance_holonyms() + \
-                       synset1.member_holonyms()
-            for holo in holonyms:
-                synset1gloss += holo.definition() + ' '
-        elif r1 == 'also-see':
-            for see in synset1.also_sees():
-                synset1gloss += see.definition() + ' '
-        elif r1 == 'attribute':
-            for att in synset1.attributes():
-                synset1gloss += att.definition() + ' '
-
-        if r2 == 'gloss':
-            synset2gloss = synset2.definition()
-        elif r2 == 'examples':
-            synset2gloss = ' '.join(synset2.examples())
-        elif r2 == 'hyponyms':
-            for hypo in synset2.hyponyms():
-                synset2gloss += hypo.definition() + ' '
-        elif r2 == 'hypernyms':
-            for hyper in synset2.hypernyms():
-                synset2gloss += hyper.definition() + ' '
-        elif r2 == 'meronyms':
-            meronyms = synset2.part_meronyms() + synset2.substance_meronyms() + \
-                       synset2.member_meronyms()
-            for mero in meronyms:
-                synset2gloss += mero.definition() + ' '
-        elif r2 == 'holonyms':
-            holonyms = synset2.part_holonyms() + synset2.substance_holonyms() + \
-                       synset2.member_holonyms()
-            for holo in holonyms:
-                synset2gloss += holo.definition() + ' '
-        elif r2 == 'also-see':
-            for see in synset2.also_sees():
-                synset2gloss += see.definition() + ' '
-        elif r2 == 'attribute':
-            for att in synset2.attributes():
-                synset2gloss += att.definition() + ' '
+        synset1gloss = utils.compute_gloss(r1, synset1)
+        synset2gloss = utils.compute_gloss(r2, synset2)
         
         totalScore += score(synset1gloss, synset2gloss)
     
@@ -266,10 +213,7 @@ pretty(adapted_lesk('bank', 'The bank can guarantee deposits will eventually cov
 #pretty(adapted_lesk('hard', 'hard cash'))
 
 ### TODO
-# Check the considered RELS
 # If pos tagging, I should take into consideration only relations pertaining to the pos of target words
 #   and should look only to relevant pos words
-# If not pos tagging, I should take into account all relations
 # Resolve the 'not found' issue by taking into account only the relevant candidate
     # senses; for example if evaluating line, consider only senses which are nouns
-# Take care of 'gloss' case in similarity
