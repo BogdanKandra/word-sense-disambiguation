@@ -33,7 +33,7 @@ def senseval_test_adapted_lesk(corpus=None):
             total_cases += 1
             context = utils.get_context(instance)
             pos = utils.CORPUS_POS_DICT.get(corpus)
-            sense = alesk(corpus, context, pos)
+            sense = alesk(corpus, context, pos=pos)
             if utils.WORDNET_SENSEVAL_DICT.get(sense.name()) is not None:
                 if utils.WORDNET_SENSEVAL_DICT[sense.name()] == instance.senses[0]:
                     correct_cases += 1
