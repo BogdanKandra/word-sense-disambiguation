@@ -98,6 +98,14 @@ SENSEVAL_WORDNET_DICT = {
     "interest_6": ["interest.n.04"] # money paid for the use of money
 }
 
+CORPUS_POS_DICT = {
+        
+    "line" : "n",
+    "hard" : "a",
+    "serve" : "v",
+    "interest" : "r"
+}
+
 STOPWORDS = ['her', 'most', 'much', 'although', 'an', 'at', 'that', 'along', 
                   'would', 'then', 'therefore', 'when', 'or', 'two', 'through', 
                   'another', 'across', 'whose', 's', 'of', 'many', 'in', 'few', 

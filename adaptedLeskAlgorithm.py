@@ -192,7 +192,7 @@ def adapted_lesk(word, sentence, context_window_size=3, pos=None):
                         w_senses = wn.synsets(w)
         
                         for w_sense in w_senses:
-                            score += similarity(sense, w_sense)
+                            score += similarity(sense, w_sense, pos)
         
                 if score > best_score:
                     best_score = score
