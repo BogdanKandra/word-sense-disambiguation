@@ -19,7 +19,7 @@ WORDNET_SENSEVAL_DICT = {
     'wrinkle.n.01' : 'division',
     'line.n.14' : 'division',
     'telephone_line.n.02' : 'phone',
-    'line.n.16' : 'division',
+    'line.n.16' : 'formation',
     'lineage.n.01' : 'formation',
     'line.n.18' : 'cord',
     'occupation.n.01' : 'product',
@@ -31,8 +31,12 @@ WORDNET_SENSEVAL_DICT = {
     'tune.n.01' : 'formation',
     'line.n.27' : 'product',
     'line.n.29' : 'division',
-    'production_line.n.01' : 'formation',
-
+    'production_line.n.01' : 'product',
+    'note.n.02' : 'text',
+    'credit_line.n.01' : 'product',
+    'argumentation.n.02' : 'formation',
+    'pipeline.n.02' : 'formation',
+    
     # HARD
     'difficult.a.01' : 'HARD1',
     'hard.a.02' : 'HARD2',
