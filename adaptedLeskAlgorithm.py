@@ -198,7 +198,7 @@ def adapted_lesk(word, sentence, context_window_size=3, pos=None):
                     best_score = score
                     best_sense = sense
     else:  # If target word is not in context, after lemmatizing, return first wordnet sense
-        f = open('logs/nopos_guessed', 'a')
+        f = open('logs/guessed.txt', 'a')
         line = "word: " + word + " in sentence: " + ' '.join(sentence)
         f.write(line + '\n')
         f.close()
@@ -219,9 +219,3 @@ def pretty(sense):
 #pretty(adapted_lesk('cone', 'pine cone'))
 #pretty(adapted_lesk('bass', 'I am cooking basses'))
 #pretty(adapted_lesk('hard', 'hard cash'))
-
-### TODO
-# If pos tagging, I should take into consideration only relations pertaining to the pos of target words
-#   and should look only to relevant pos words
-# Resolve the 'not found' issue by taking into account only the relevant candidate
-    # senses; for example if evaluating line, consider only senses which are nouns

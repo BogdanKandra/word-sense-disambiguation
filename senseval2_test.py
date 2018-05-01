@@ -27,7 +27,7 @@ def senseval_test_adapted_lesk(corpus=None):
         correct_cases = 0
         not_found = 0
         
-        f_results = open("logs/nopos_results.txt", "a")
+        f_results = open("logs/pos_results_serve.txt", "a")
         
         for instance in instances:
             total_cases += 1
@@ -43,7 +43,7 @@ def senseval_test_adapted_lesk(corpus=None):
             else:
                 not_found += 1
                 print(correct_cases, "out of", total_cases, " (not found) - ", sense.name(), 'correct was ', instance.senses[0])
-                f_notFound = open("logs/nopos_notFound.txt", "a")
+                f_notFound = open("logs/notFound.txt", "a")
                 line_write = "sense: " + sense.name() + "; correct was: " + instance.senses[0]
                 f_notFound.write(line_write + '\n')
                 f_notFound.close()
@@ -60,5 +60,5 @@ def senseval_test_adapted_lesk(corpus=None):
     else:
         return 0
 
-print(senseval_test_adapted_lesk('line'))
+print(senseval_test_adapted_lesk('serve'))
 #print(sys.path)
