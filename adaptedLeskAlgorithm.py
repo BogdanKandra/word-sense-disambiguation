@@ -218,4 +218,4 @@ def pretty(sense):
 #pretty(adapted_lesk('bank', 'The bank can guarantee deposits will eventually cover future tuition costs because it invests in adjustable-rate mortgage securities.'))
 #pretty(adapted_lesk('cone', 'pine cone'))
 #pretty(adapted_lesk('bass', 'I am cooking basses'))
-#pretty(adapted_lesk('hard', 'hard cash'))
+pretty(adapted_lesk('doctor', 'the doctor hired many new nurses for the hospital'))
